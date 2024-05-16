@@ -1,0 +1,20 @@
+// schema.prisma
+
+datasource db {
+  provider = "mysql" // or your preferred database provider
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Movie {
+  id          Int      @id @default(autoincrement())
+  title       String
+  releaseYear Int
+  Actor       String
+  director    String
+  genre       String
+  rating      Float
+}

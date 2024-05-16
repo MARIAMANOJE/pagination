@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movies List Using Pagination</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <style>
+    /* Table styles */
+    h1
+    {
+      text-align: center;
+      justify-self: center;
+      background-color: rebeccapurple;
+      background-color: #dddddd;
+    }
+    body{
+      background-color: wheat;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #dddddd;
+      padding: 8px;
+    }
+    th {
+      background-color: black;
+      color: white;
+    }
+    /* Table data row styles */
+    tbody tr:nth-child(odd) {
+      background-color: yellow;
+    }
+    tbody tr:nth-child(even) {
+      background-color: skyblue;
+    }
+    
+    /* Pagination styles */
+    .pagination {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      float: right;
+    }
+    .pagination li {
+      margin-right: 10px;
+      display: inline-block;
+      background-color: blue;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+    .pagination li a {
+      text-decoration: none;
+      color: white;
+    }
+    .pagination li a:hover {
+      background-color: darkblue;
+    }
+  </style>
+</head>
+<body>
+  <h1>Movies List Using Pagination</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Release Year</th>
+        <th>Actor(s)</th>
+        <th>Director</th>
+        <th>Genre</th>
+        <th>Rating</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% movies.forEach((movie, index) => { %>
+        <tr style="background-color: <%= index % 2 === 0 ? 'green' : 'yellow' %>;">
+          <td><%= movie.id %></td>
+          <td><%= movie.title %></td>
+          <td><%= movie.releaseYear %></td>
+          <td><%= movie.Actor %></td>
+          <td><%= movie.director %></td>
+          <td><%= movie.genre %></td>
+          <td><%= movie.rating %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <ul class="pagination">
+    <% if (page > 1) { %>
+      <li><a href="/movies?page=<%= page - 1 %>&pageSize=<%= pageSize %>">Previous</a></li>
+    <% } %>
+    <% for (let i = 1; i <= totalPages; i++) { %>
+      <li><a href="/movies?page=<%= i %>&pageSize=<%= pageSize %>"><%= i %></a></li>
+    <% } %>
+    <% if (page < totalPages) { %>
+      <li><a href="/movies?page=<%= page + 1 %>&pageSize=<%= pageSize %>">Next</a></li>
+    <% } else if (page === totalPages && movies.length === 0) { %>
+      <li><span>No data available</span></li>
+    <% } else { %>
+      <li><a href="/movies?page=<%= page + 1 %>&pageSize=<%= pageSize %>">Next</a></li>
+    <% } %>
+  </ul>
+  <% if (page > totalPages) { %>
+    <script>
+      alert('Error: No data available for page <%= page %>');
+      window.history.back(); // Redirect to the last available page
+    </script>
+  <% } %>
+</body>
+</html>
